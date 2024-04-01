@@ -1,0 +1,146 @@
+@startuml
+
+class Piece {
+    - int[] sides
+    - int rotation
+    - int index
+
+    -- Constructor --
+    + Piece(String numbersString, int index)
+    + Piece(Piece other)
+
+    -- Rotation methods --
+    + void rotateClockwise()
+
+    -- General methods --
+    - static int countEdges(int[] arr)
+    + boolean isBody()
+    + boolean isEdge()
+    + boolean isCorner()
+    + static boolean isNotInArray(Piece piece, Piece[] arr)
+
+    -- Orientation methods --
+    + String orientation()
+    + void modifyOrientation()
+
+    -- Getter --
+    + int getRotation()
+    + int getIndex()
+    + int bottom()
+    + int left()
+    + int right()
+    + int top()
+
+    -- Output --
+    + String toString()
+}
+
+class Set {
+    - Piece[] pieces
+    - int xDim
+    - int yDim
+
+    -- Constructor --
+    + Set(String filePath)
+
+    -- Getter --
+    + int getxDim()
+    + int getyDim()
+    + Piece[] getCornerPieces()
+    + Piece[] getEdgePieces()
+    + Piece[] getBodyPieces()
+
+    -- Output --
+    + String toString()
+}
+
+class Solution {
+    - Set set
+    - Piece[][] pieces
+    - Piece[] cornerPieces
+    - Piece[] edgePieces
+    - Piece[] bodyPieces
+    - int score
+    - RandomGenerator random
+
+    -- Constructor --
+    + Solution(Set set)
+    + Solution(Set set, Piece[] pieces)
+
+    -- Shuffling methods --
+    - void fisherYatesShuffle(Piece[] arr)
+    + void shufflePieces(boolean withRotation)
+
+    -- Positioning methods --
+    - void positionCornerPieces()
+    - void reorientCornerPieces()
+    - void positionEdgePieces()
+    - void reorientEdgePieces()
+    - void positionBodyPieces()
+    + void positionPieces()
+    + void mutate()
+    + Piece[] toOneDimension()
+
+    -- Evaluation methods --
+    - void evaluateBorders()
+    - void evaluateBody()
+    + void evaluate()
+    + boolean checkUniqueness()
+
+    -- Getter --
+    + int getScore()
+
+    -- Output  --
+    + String toString()
+    + void outputEval(String filePath)
+    + void outputProcessing(String filePath)
+}
+
+class Pool {
+    - Solution[] storedSolutions
+    - RandomGenerator random
+    - Set set
+    - ArrayList<Integer> scoreHistory
+
+    -- Constructor --
+    Pool(Set set)
+
+    -- Gene pool methods --
+    - void evaluate()
+    - Solution selectParent()
+    - Solution performCrossover(Solution parent1, Solution parent2)
+    - Piece[] resetPiecesOrder(Piece[] pieces)
+    + void addSolution()
+    + void initialisePoolSolutions()
+    + void crossover()
+    + Solution getBestSolution()
+    + void saveCurrentBestScore()
+
+
+    -- Output --
+    + String toString()
+    + void outputScoreHistory(String filePath)
+}
+
+class RandomGenerator {
+    - RandomGenerator instance
+    - Random random
+
+    -- Constructor --
+    - RandomGenerator()
+    + static RandomGenerator getInstance()
+
+    -- Random methods --
+    + int generateInt(int bound)
+    + int generateInt(int lb, int ub)
+    + generateDouble()
+}
+
+Pool " 1 " --o " *  " Solution: contains
+Pool " 1 " --o " 1 " Set: references
+Pool " 1 " --o " 1 " RandomGenerator: references
+Solution " 1 " --o " 1 " RandomGenerator: references
+Solution " * " --o " 1 " Set: references
+Set "1 " --o " * " Piece: contains
+
+@enduml

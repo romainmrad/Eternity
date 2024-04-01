@@ -1,0 +1,48 @@
+@startuml
+
+skinparam ParticipantFontStyle bold
+skinparam DatabaseFontStyle bold
+skinparam CollectionsFontStyle bold
+skinparam BackgroundColor White
+skinparam TitleFontSize 25
+skinparam TitleFontStyle bold
+autonumber "<font color=blue><b>"
+
+title Genetic Algorithm for Eternity 2 puzzle
+
+database "Local Data" #SteelBlue
+participant Set #White
+participant Pool #White
+collections Solutions #3D8B7F
+
+autonumber
+
+"Local Data" <-> Set: Instantiate Set\nand load puzzle
+activate Set #LightSlateGrey
+Set <-> Pool: Instantiate Pool
+activate Pool #LightSlateGrey
+
+loop #LightBlue 20
+    Pool <-> Solutions: Instantiate random\nsolution and add\nto pool
+end
+
+loop #LightBlue 5000
+    Pool -> Pool: Select random parents
+    Pool -> Pool: Perform crossover
+    Pool -> Solutions: Select best child and\ninstantiate solution
+    activate Solutions #LightSlateGrey
+    Solutions -> Solutions: Mutate the child
+    Solutions -> Solutions: Evaluate child
+    Solutions -> Pool: Add mutated child to\nnew pool
+    deactivate Solutions #LightSlateGrey
+    Pool -> Pool: Update gene pool with\nmutated children
+end
+
+Pool -> "Local Data": Output score history
+Pool -> "Local Data": Output the best solution for evaluation
+Pool -> "Local Data": Output the best solution for visualisation\nusing processing
+
+deactivate Set
+deactivate Pool
+
+@enduml
