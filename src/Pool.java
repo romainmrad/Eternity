@@ -73,9 +73,12 @@ public class Pool {
             if (!child.checkUniqueness()) {
                 System.out.println("Solution not unique");
             }
-            // Optionally mutate the child solution
+            // Mutate the child solution
             child.mutate();
             child.evaluate();
+            // Perform tabu search to find better solution
+            TabuSearch search = new TabuSearch(5000, 10);
+            child = search.solve(child);
             // Add child to the new generation
             newGeneration.add(child);
         }
@@ -97,7 +100,7 @@ public class Pool {
         int bestScore = Integer.MIN_VALUE;
         for (int i = 0; i < tournamentSize; i++) {
             Solution candidate = this.storedSolutions.get(this.random.generateInt(this.storedSolutions.size()));
-            int score = candidate.getScore();
+            int score = candidate.getFitness();
             if (score > bestScore) {
                 bestScore = score;
                 bestSolution = candidate;
@@ -111,7 +114,7 @@ public class Pool {
      */
     public void saveCurrentBestScore() {
         // Adding current score history
-        this.scoreHistory.add(getBestSolution().getScore());
+        this.scoreHistory.add(getBestSolution().getFitness());
     }
 
     /**
@@ -125,7 +128,8 @@ public class Pool {
         // Number of total pieces
         int numPieces = this.set.getxDim() * this.set.getyDim();
         // Crossover point
-        int crossoverPoint = this.random.generateInt(numPieces);
+        int secondCrossoverPoint = this.random.generateInt(1, numPieces);
+        int firstCrossoverPoint = this.random.generateInt(secondCrossoverPoint);
         // Converting parents to one dimensional pieces array
         Piece[] firstParentPieces = parent1.toOneDimension();
         Piece[] secondParentPieces = parent2.toOneDimension();
@@ -134,9 +138,19 @@ public class Pool {
         Piece[] secondChildPieces = new Piece[numPieces];
         // Copying parents up to crossover point then switching parents
         for (int i = 0; i < numPieces; i++) {
-            if (i < crossoverPoint) {
-                firstChildPieces[i] = new Piece(firstParentPieces[i]);
-                secondChildPieces[i] = new Piece(secondParentPieces[i]);
+            if (i >= firstCrossoverPoint && i <= secondCrossoverPoint) {
+                for (Piece piece : firstParentPieces) {
+                    if (Piece.isNotInArray(piece, firstChildPieces)) {
+                        firstChildPieces[i] = new Piece(piece);
+                        break;
+                    }
+                }
+                for (Piece piece : secondParentPieces) {
+                    if (Piece.isNotInArray(piece, secondChildPieces)) {
+                        secondChildPieces[i] = new Piece(piece);
+                        break;
+                    }
+                }
             } else {
                 for (Piece piece : secondParentPieces) {
                     if (Piece.isNotInArray(piece, firstChildPieces)) {
@@ -163,7 +177,7 @@ public class Pool {
         // Returning best child
         child1.evaluate();
         child2.evaluate();
-        if (child1.getScore() > child2.getScore()) return child1;
+        if (child1.getFitness() > child2.getFitness()) return child1;
         else return child2;
     }
 
@@ -202,7 +216,7 @@ public class Pool {
         Solution bestSolution = null;
         int maxErrors = Integer.MIN_VALUE;
         for (Solution solution : this.storedSolutions) {
-            int score = solution.getScore();
+            int score = solution.getFitness();
             if (score > maxErrors) {
                 maxErrors = score;
                 bestSolution = solution;
@@ -223,7 +237,7 @@ public class Pool {
             // Adding solution index
             stringBuilder.append("Solution: ").append(i);
             // Adding solution score
-            stringBuilder.append(" --- Score: ").append(this.storedSolutions.get(i).getScore()).append('\n');
+            stringBuilder.append(" --- Score: ").append(this.storedSolutions.get(i).getFitness()).append('\n');
             // Adding solution string representation
             stringBuilder.append(this.storedSolutions.get(i));
             // Adding line breaks

@@ -19,8 +19,8 @@ public class Solution {
     // Array of body pieces
     private final Piece[] bodyPieces;
 
-    // Number of errors in solution
-    private int score;
+    // Solution fitness
+    private int fitness;
 
     // Random generator
     private final RandomGenerator random;
@@ -32,7 +32,7 @@ public class Solution {
         // Referencing Set object
         this.set = set;
         // Initialising number of errors
-        this.score = 0;
+        this.fitness = 0;
         // Initialising pieces arrays
         this.pieces = new Piece[this.set.getxDim()][this.set.getyDim()];
         this.cornerPieces = this.set.getCornerPieces();
@@ -46,7 +46,7 @@ public class Solution {
         // Referencing Set object
         this.set = set;
         // Initialising number of errors
-        this.score = 0;
+        this.fitness = 0;
         // Initialising pieces arrays
         this.pieces = new Piece[this.set.getxDim()][this.set.getyDim()];
         this.cornerPieces = new Piece[4];
@@ -57,6 +57,35 @@ public class Solution {
         System.arraycopy(pieces, 4 + this.edgePieces.length, this.bodyPieces, 0, this.bodyPieces.length);
         // Initialising random generator
         this.random = RandomGenerator.getInstance();
+    }
+
+    /**
+     * Copy constructor
+     *
+     * @param other solution to copy
+     */
+    public Solution(Solution other) {
+        this.set = other.set;
+        this.fitness = other.fitness;
+        this.random = RandomGenerator.getInstance();
+        this.pieces = new Piece[this.set.getxDim()][this.set.getyDim()];
+        this.cornerPieces = new Piece[4];
+        this.edgePieces = new Piece[2 * ((this.set.getxDim() - 2) + (this.set.getyDim() - 2))];
+        this.bodyPieces = new Piece[(this.set.getxDim() - 2) * (this.set.getyDim() - 2)];
+        for (int i = 0; i < this.set.getxDim(); i++) {
+            for (int j = 0; j < this.set.getyDim(); j++) {
+                this.pieces[i][j] = new Piece(other.pieces[i][j]);
+            }
+        }
+        for (int i = 0; i < cornerPieces.length; i++) {
+            this.cornerPieces[i] = new Piece(other.cornerPieces[i]);
+        }
+        for (int i = 0; i < edgePieces.length; i++) {
+            this.edgePieces[i] = new Piece(other.edgePieces[i]);
+        }
+        for (int i = 0; i < bodyPieces.length; i++) {
+            this.bodyPieces[i] = new Piece(other.bodyPieces[i]);
+        }
     }
 
     /**
@@ -94,6 +123,7 @@ public class Solution {
 
     /**
      * Convert 2D grid-like Piece array to 1D array
+     *
      * @return 1D array of Pieces
      */
     public Piece[] toOneDimension() {
@@ -227,12 +257,12 @@ public class Solution {
         for (int i = 0; i < this.set.getxDim(); i++) {
             // Checking left edge
             if (this.pieces[i][0].left() != 0) {
-                this.score = -1;
+                this.fitness = -1;
                 return;
             }
             // Checking right edge
             if (this.pieces[i][this.set.getyDim() - 1].right() != 0) {
-                this.score = -1;
+                this.fitness = -1;
                 return;
             }
         }
@@ -240,12 +270,12 @@ public class Solution {
         for (int j = 0; j < this.set.getyDim(); j++) {
             // Checking top edge
             if (this.pieces[0][j].top() != 0) {
-                this.score = -1;
+                this.fitness = -1;
                 return;
             }
             // Checking bottom edge
             if (this.pieces[this.set.getxDim() - 1][j].bottom() != 0) {
-                this.score = -1;
+                this.fitness = -1;
                 return;
             }
         }
@@ -261,12 +291,12 @@ public class Solution {
                 // If piece is not on right-most column
                 if (j < this.set.getyDim() - 1) {
                     // Check compatibility with east neighbor
-                    if (this.pieces[i][j].right() == this.pieces[i][j + 1].left()) this.score++;
+                    if (this.pieces[i][j].right() == this.pieces[i][j + 1].left()) this.fitness++;
                 }
                 // If piece is not on last row
                 if (i < this.set.getxDim() - 1) {
                     // Check compatibility with south neighbor
-                    if (this.pieces[i][j].bottom() == this.pieces[i + 1][j].top()) this.score++;
+                    if (this.pieces[i][j].bottom() == this.pieces[i + 1][j].top()) this.fitness++;
                 }
             }
         }
@@ -278,7 +308,7 @@ public class Solution {
     public void evaluate() {
         // Evaluating borders
         this.evaluateBorders();
-        if (this.score == 0){
+        if (this.fitness == 0) {
             // Evaluating color matching
             this.evaluateBody();
         }
@@ -341,8 +371,8 @@ public class Solution {
      *
      * @return score
      */
-    public int getScore() {
-        return this.score;
+    public int getFitness() {
+        return this.fitness;
     }
 
     /**
@@ -360,6 +390,20 @@ public class Solution {
             stringBuilder.append('\n');
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * Checks if two solutions are equal
+     *
+     * @param obj another solution
+     * @return true if both solutions are equal
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Solution) {
+            return this.toString().equals(obj.toString());
+        }
+        return false;
     }
 
     /**

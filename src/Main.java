@@ -3,7 +3,7 @@ public class Main {
         // Initialising eternity 2 puzzle
         String targetBench = "pieces_16x16";
         // Instantiating Set and Pool
-        Set set = new Set("benchs/pieces_set/" + targetBench + ".txt");
+        Set set = new Set("../benchs/pieces_set/" + targetBench + ".txt");
         Pool pool = new Pool(set);
         // Keeping track of best solution
         Solution overallBestSolution = null;
@@ -20,21 +20,18 @@ public class Main {
             // Save current best score
             pool.saveCurrentBestScore();
             // Log
-            System.out.println("Iteration: " + i + " --- Best solution score: " + pool.getBestSolution().getScore());
+            System.out.println("Iteration: " + i + " --- Best solution score: " + pool.getBestSolution().getFitness());
             // Update best solution
-            if (pool.getBestSolution().getScore() > overallMaxScore) {
-                overallMaxScore = pool.getBestSolution().getScore();
+            if (pool.getBestSolution().getFitness() > overallMaxScore) {
+                overallMaxScore = pool.getBestSolution().getFitness();
                 overallBestSolution = pool.getBestSolution();
             }
         }
         // Output score history
-        pool.outputScoreHistory("score/scoreEvolution_" + targetBench + ".csv");
+        pool.outputScoreHistory("../score/scoreEvolution_" + targetBench + ".csv");
         // Output last solution and overall solution for evaluation and processing
-        pool.getBestSolution().outputEval("solutionOutput/lastBestSolutionOutput_" + targetBench + ".txt");
-        pool.getBestSolution().outputProcessing("processing/lastBestSolutionProcessing_" + targetBench + ".txt");
         assert overallBestSolution != null;
-        overallBestSolution.outputEval("solutionOutput/overallBestSolutionOutput_" + targetBench + ".txt");
-        overallBestSolution.outputProcessing("processing/overallBestSolutionProcessing_" + targetBench + ".txt");
-        System.out.println(pool.getBestSolution());
+        overallBestSolution.outputEval("../solutionOutput/overallBestSolutionOutput_" + targetBench + ".txt");
+        overallBestSolution.outputProcessing("../processing/overallBestSolutionProcessing_" + targetBench + ".txt");
     }
 }
