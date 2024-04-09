@@ -111,19 +111,6 @@ public class Pool {
     }
 
     /**
-     * Infect gene pool to chock breading process
-     */
-    public void infect() {
-        for (int i = this.storedSolutions.size() / 2; i < this.storedSolutions.size(); i++) {
-            Solution solution = new Solution(set);
-            solution.shufflePieces(true);
-            solution.positionPieces();
-            solution.evaluate();
-            this.storedSolutions.set(i, solution);
-        }
-    }
-
-    /**
      * Save current best score to score history
      */
     public void saveCurrentBestScore() {
@@ -193,6 +180,13 @@ public class Pool {
         child2.evaluate();
         if (child1.getFitness() > child2.getFitness()) return child1;
         else return child2;
+    }
+
+    /**
+     * Perform tabu search on all solutions in current pool
+     */
+    public void solveTabuSearch() {
+        this.storedSolutions.replaceAll(solution -> new TabuSearch(5000).solve(solution));
     }
 
     /**

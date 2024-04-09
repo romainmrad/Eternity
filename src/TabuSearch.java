@@ -1,35 +1,56 @@
 import java.util.ArrayList;
 
 public class TabuSearch {
+    // Tabu list to store visited solutions
     private final ArrayList<Solution> tabuList;
-    private final int maxIterations;
-    private final int tabuSize;
 
+    // Max number of iterations
+    private final int maxIterations;
+
+    /**
+     * Constructor
+     *
+     * @param maxIterations maximum number of iterations
+     */
     public TabuSearch(int maxIterations) {
         this.maxIterations = maxIterations;
-        this.tabuSize = 100;
         this.tabuList = new ArrayList<>();
     }
 
+    /**
+     * Solve tabu search optimisation
+     *
+     * @param initialSolution initial solution
+     * @return best found solution after all iterations
+     */
     public Solution solve(Solution initialSolution) {
+        // Instantiate the best solution and set it to initial solution
         Solution bestSolution = new Solution(initialSolution);
+        // Start iterations
         for (int i = 0; i < this.maxIterations; i++) {
+            // Get current best solution neighbors
             ArrayList<Solution> neighbors = generateNeighbors(bestSolution);
-            boolean neighborFound = false;
-            while (!neighborFound && !neighbors.isEmpty()) {
+            // Reset bestNeighborFound variable
+            boolean bestNeighborFound = false;
+            // While no best neighbor found and neighbor list is not empty
+            while (!bestNeighborFound && !neighbors.isEmpty()) {
+                // Get best neighbor of current neighbor list
                 Solution bestNeighbor = getBestSolution(neighbors);
-//                System.out.println("Current " + bestSolution.getFitness() + " -- Neighbor " + bestNeighbor.getFitness());
+                // If best neighbor not in tabu list
                 if (!this.tabuList.contains(bestNeighbor)) {
-//                    System.out.println("New best neighbor found");
-                    neighborFound = true;
+                    // Set bestNeighborFound to true to exist while loop
+                    bestNeighborFound = true;
+                    // If current best neighbor better than current best solution
                     if (bestNeighbor.getFitness() > bestSolution.getFitness()) {
-//                        System.out.println("New best solution found");
+                        // Set best solution to current best neighbor
                         bestSolution = bestNeighbor;
+                        // Update tabu list
                         this.tabuList.add(bestNeighbor);
-                        if (this.tabuList.size() >= this.tabuSize) {
+                        if (this.tabuList.size() >= 100) {
                             this.tabuList.remove(0);
                         }
                     }
+                    // If best neighbor in tabu list, remove it from neighbors list and try again
                 } else {
                     neighbors.remove(bestNeighbor);
                 }
@@ -38,20 +59,40 @@ public class TabuSearch {
         return bestSolution;
     }
 
+    /**
+     * Generate a list of neighbors for a given solution.
+     * Neighbors are generated using mutations (swaps and rotations).
+     *
+     * @param solution the solution
+     * @return list of neighbors to the solution
+     */
     private ArrayList<Solution> generateNeighbors(Solution solution) {
+        // Instantiate neighbors list
         ArrayList<Solution> neighbors = new ArrayList<>();
-        for (int i = 0; i < 10; i++) { // Generate 10 neighbors
-            Solution neighbor = new Solution(solution); // Make a copy of the current solution
+        // Generate 10 neighbors
+        for (int i = 0; i < 10; i++) {
+            // Make a copy of the current solution
+            Solution neighbor = new Solution(solution);
+            // Mutate it and evaluate it
             neighbor.mutate();
             neighbor.evaluate();
-            neighbors.add(neighbor); // Add the mutated solution to the list of neighbors
+            // Add the mutated solution to the list of neighbors
+            neighbors.add(neighbor);
         }
         return neighbors;
     }
 
+    /**
+     * Get the best solution in a list of solutions
+     *
+     * @param solutionList list of solutions
+     * @return the best solution
+     */
     private static Solution getBestSolution(ArrayList<Solution> solutionList) {
+        // Instantiate best solution pointer to null
         Solution bestSolution = null;
         int bestSolutionFitness = 0;
+        // Find solution with max fitness in list and return it
         for (Solution otherSolution : solutionList) {
             if (bestSolutionFitness < otherSolution.getFitness()) {
                 bestSolution = otherSolution;
@@ -59,19 +100,5 @@ public class TabuSearch {
             }
         }
         return bestSolution;
-    }
-
-    public static void main(String[] args) {
-        // Initialising eternity 2 puzzle
-        String targetBench = "pieces_16x16";
-        // Instantiating Set and Pool
-        Set set = new Set("./benchs/pieces_set/" + targetBench + ".txt");
-        Solution solution = new Solution(set);
-        solution.shufflePieces(true);
-        solution.positionPieces();
-        solution.evaluate();
-        TabuSearch search = new TabuSearch(5000);
-        Solution bestSolution = search.solve(solution);
-        System.out.println(bestSolution.getFitness());
     }
 }

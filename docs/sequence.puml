@@ -13,6 +13,7 @@ title Genetic Algorithm for Eternity 2 puzzle
 database "Local Data" #SteelBlue
 participant Set #White
 participant Pool #White
+participant "Tabu Search" #White
 collections Solutions #3D8B7F
 
 autonumber
@@ -34,6 +35,11 @@ loop #LightBlue 5000
     Solutions -> Solutions: Mutate the child
     Solutions -> Solutions: Evaluate child
     Solutions -> Pool: Add mutated child to\nnew pool
+    Pool -> "Tabu Search": Instantiate tabu search
+    activate "Tabu Search" #LightSlateGrey
+    "Tabu Search" -> "Tabu Search": solve search\nfor current child
+    "Tabu Search" -> Pool: update child
+    deactivate "Tabu Search"
     deactivate Solutions #LightSlateGrey
     Pool -> Pool: Update gene pool with\nmutated children
 end

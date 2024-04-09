@@ -456,17 +456,4 @@ public class Solution {
             System.err.println("Error writing to file: " + e.getMessage());
         }
     }
-
-    public static void main(String[] args) {
-        // Initialising eternity 2 puzzle
-        String targetBench = "pieces_16x16";
-        // Instantiating Set and Pool
-        Set set = new Set("./benchs/pieces_set/" + targetBench + ".txt");
-        Solution solution1 = new Solution(set);
-        solution1.shufflePieces(true);
-        solution1.positionPieces();
-        Solution solution2 = new Solution(solution1);
-        solution2.mutate();
-        System.out.println(solution1.equals(solution2));
-    }
 }

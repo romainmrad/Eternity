@@ -18,6 +18,7 @@ class Piece {
     + boolean isEdge()
     + boolean isCorner()
     + static boolean isNotInArray(Piece piece, Piece[] arr)
+    + boolean equals()
 
     -- Orientation methods --
     + String orientation()
@@ -66,6 +67,7 @@ class Solution {
     -- Constructor --
     + Solution(Set set)
     + Solution(Set set, Piece[] pieces)
+    + Solution(Solution other)
 
     -- Shuffling methods --
     - void fisherYatesShuffle(Piece[] arr)
@@ -86,6 +88,7 @@ class Solution {
     - void evaluateBody()
     + void evaluate()
     + boolean checkUniqueness()
+    + boolean equals()
 
     -- Getter --
     + int getScore()
@@ -136,11 +139,25 @@ class RandomGenerator {
     + generateDouble()
 }
 
+class TabuSearch {
+    - ArrayList<Solution> tabuList
+    - int maxIterations
+
+    -- Constructor --
+    + TabuSearch(int maxIterations)
+
+    -- Search methods --
+    - ArrayList<Solution> generateNeighbors()
+    - Solution getBestSolution()
+    + Solution solve()
+}
+
 Pool " 1 " --o " *  " Solution: contains
 Pool " 1 " --o " 1 " Set: references
 Pool " 1 " --o " 1 " RandomGenerator: references
 Solution " 1 " --o " 1 " RandomGenerator: references
 Solution " * " --o " 1 " Set: references
 Set "1 " --o " * " Piece: contains
+Pool -- TabuSearch: uses
 
 @enduml
