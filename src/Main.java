@@ -9,10 +9,10 @@ public class Main {
         Solution overallBestSolution = null;
         int overallMaxScore = Integer.MIN_VALUE;
         // Initialising pool with random solutions and saving score
-        pool.initialisePoolSolutions(20);
+        pool.initialisePoolSolutions(10);
         pool.saveCurrentBestScore();
         // Performing genetic algorithm
-        for (int i = 0; i < 5000; i++) {
+        for (int i = 0; i < 100; i++) {
             // Crossover
             pool.crossover();
             // Evaluate each solution in current pool

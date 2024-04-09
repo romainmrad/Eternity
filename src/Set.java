@@ -113,7 +113,7 @@ public class Set {
         for (int i = 0; i < numPieces; i++) {
             pieces[i] = new Piece(this.pieces[i + startIndex]);
         }
-        // Copying pieces in array and returing it
+        // Copying pieces in array and returning it
         return pieces;
     }
 }

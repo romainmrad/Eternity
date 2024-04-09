@@ -72,6 +72,11 @@ public class Piece {
         return stringBuilder.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof Piece && ((Piece) o).index == this.index && ((Piece) o).rotation == this.rotation;
+    }
+
     /**
      * Checks if a piece is a body piece
      *
@@ -210,5 +215,12 @@ public class Piece {
      */
     public int right() {
         return this.sides[3];
+    }
+
+    public static void main(String[] args) {
+        Piece piece1 = new Piece("1 1 0 0", 0);
+        Piece piece2 = new Piece("1 1 0 0", 0);
+        piece1.rotateClockwise();
+        System.out.println(piece1.equals(piece2));
     }
 }

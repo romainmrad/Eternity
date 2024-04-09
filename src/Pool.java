@@ -72,12 +72,13 @@ public class Pool {
             Solution child = performCrossover(parent1, parent2);
             if (!child.checkUniqueness()) {
                 System.out.println("Solution not unique");
+                return;
             }
             // Mutate the child solution
             child.mutate();
             child.evaluate();
             // Perform tabu search to find better solution
-            TabuSearch search = new TabuSearch(5000, 10);
+            TabuSearch search = new TabuSearch(5000);
             child = search.solve(child);
             // Add child to the new generation
             newGeneration.add(child);
@@ -107,6 +108,19 @@ public class Pool {
             }
         }
         return bestSolution;
+    }
+
+    /**
+     * Infect gene pool to chock breading process
+     */
+    public void infect() {
+        for (int i = this.storedSolutions.size() / 2; i < this.storedSolutions.size(); i++) {
+            Solution solution = new Solution(set);
+            solution.shufflePieces(true);
+            solution.positionPieces();
+            solution.evaluate();
+            this.storedSolutions.set(i, solution);
+        }
     }
 
     /**

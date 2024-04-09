@@ -66,7 +66,7 @@ public class Solution {
      */
     public Solution(Solution other) {
         this.set = other.set;
-        this.fitness = other.fitness;
+        this.fitness = 0;
         this.random = RandomGenerator.getInstance();
         this.pieces = new Piece[this.set.getxDim()][this.set.getyDim()];
         this.cornerPieces = new Piece[4];
@@ -395,13 +395,18 @@ public class Solution {
     /**
      * Checks if two solutions are equal
      *
-     * @param obj another solution
+     * @param o another solution
      * @return true if both solutions are equal
      */
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Solution) {
-            return this.toString().equals(obj.toString());
+    public boolean equals(Object o) {
+        if (o instanceof Solution) {
+            for (int i = 0; i < this.set.getxDim(); i++) {
+                for (int j = 0; j < this.set.getyDim(); j++) {
+                    if (!this.pieces[i][j].equals(((Solution) o).pieces[i][j])) return false;
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -450,5 +455,18 @@ public class Solution {
         } catch (IOException e) {
             System.err.println("Error writing to file: " + e.getMessage());
         }
+    }
+
+    public static void main(String[] args) {
+        // Initialising eternity 2 puzzle
+        String targetBench = "pieces_16x16";
+        // Instantiating Set and Pool
+        Set set = new Set("./benchs/pieces_set/" + targetBench + ".txt");
+        Solution solution1 = new Solution(set);
+        solution1.shufflePieces(true);
+        solution1.positionPieces();
+        Solution solution2 = new Solution(solution1);
+        solution2.mutate();
+        System.out.println(solution1.equals(solution2));
     }
 }
