@@ -48,15 +48,6 @@ public class Pool {
     }
 
     /**
-     * Evaluate pool solutions
-     */
-    public void evaluate() {
-        for (Solution solution : storedSolutions) {
-            solution.evaluate();
-        }
-    }
-
-    /**
      * Performs crossover genetic algorithm
      */
     public void crossover() {
@@ -94,6 +85,7 @@ public class Pool {
         Solution bestSolution = null;
         int bestScore = Integer.MIN_VALUE;
         for (int i = 0; i < tournamentSize; i++) {
+            // Get candidate
             Solution candidate = this.storedSolutions.get(this.random.generateInt(this.storedSolutions.size()));
             int score = candidate.getFitness();
             if (score > bestScore) {
@@ -101,6 +93,7 @@ public class Pool {
                 bestSolution = candidate;
             }
         }
+        // Return best candidate
         return bestSolution;
     }
 
@@ -123,8 +116,8 @@ public class Pool {
         // Creating children 1D pieces array
         Piece[] firstChildPieces = new Piece[numPieces];
         Piece[] secondChildPieces = new Piece[numPieces];
-        // Copying parents up to crossover point then switching parents
         for (int i = 0; i < numPieces; i++) {
+            // If between crossover points, copy parent
             if (i >= firstCrossoverPoint && i <= secondCrossoverPoint) {
                 for (Piece piece : firstParentPieces) {
                     if (Piece.isNotInArray(piece, firstChildPieces)) {
@@ -138,6 +131,7 @@ public class Pool {
                         break;
                     }
                 }
+                // If outside crossover points, copy other parent
             } else {
                 for (Piece piece : secondParentPieces) {
                     if (Piece.isNotInArray(piece, firstChildPieces)) {
@@ -171,8 +165,8 @@ public class Pool {
     /**
      * Perform tabu search on all solutions in current pool
      */
-    public void solveTabuSearch() {
-        this.storedSolutions.replaceAll(solution -> new TabuSearch(10000).solve(solution));
+    public void solveTabuSearch(int iterations, boolean verbose) {
+        this.storedSolutions.replaceAll(solution -> new TabuSearch(iterations).solve(solution, verbose));
     }
 
     /**
@@ -182,10 +176,12 @@ public class Pool {
      * @return reordered pieces array
      */
     private Piece[] resetPiecesOrder(Piece[] pieces) {
+        // Instantiating variables
         Piece[] newPieces = new Piece[pieces.length];
         int cornerIndex = 0;
         int edgeIndex = 4;
         int bodyIndex = 4 + 2 * (this.set.getxDim() - 2) + 2 * (this.set.getyDim() - 2);
+        // Reordering pieces for positioning
         for (Piece piece : pieces) {
             if (piece.isCorner()) {
                 newPieces[cornerIndex] = piece;
@@ -208,11 +204,11 @@ public class Pool {
      */
     public Solution getBestSolution() {
         Solution bestSolution = null;
-        int maxErrors = Integer.MIN_VALUE;
+        int minFitness = Integer.MIN_VALUE;
         for (Solution solution : this.storedSolutions) {
-            int score = solution.getFitness();
-            if (score > maxErrors) {
-                maxErrors = score;
+            int fitness = solution.getFitness();
+            if (fitness > minFitness) {
+                minFitness = fitness;
                 bestSolution = solution;
             }
         }
@@ -231,7 +227,7 @@ public class Pool {
             // Adding solution index
             stringBuilder.append("Solution: ").append(i);
             // Adding solution score
-            stringBuilder.append(" --- Score: ").append(this.storedSolutions.get(i).getFitness()).append('\n');
+            stringBuilder.append(" --- Fitness: ").append(this.storedSolutions.get(i).getFitness()).append('\n');
             // Adding solution string representation
             stringBuilder.append(this.storedSolutions.get(i));
             // Adding line breaks

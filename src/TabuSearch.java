@@ -23,9 +23,9 @@ public class TabuSearch {
      * @param initialSolution initial solution
      * @return best found solution after all iterations
      */
-    public Solution solve(Solution initialSolution) {
+    public Solution solve(Solution initialSolution, boolean verbose) {
         // Instantiate the best solution and set it to initial solution
-        Solution bestSolution = new Solution(initialSolution);
+        Solution bestSolution = initialSolution;
         // Start iterations
         for (int i = 0; i < this.maxIterations; i++) {
             // Get current best solution neighbors
@@ -44,6 +44,8 @@ public class TabuSearch {
                     if (bestNeighbor.getFitness() > bestSolution.getFitness()) {
                         // Set best solution to current best neighbor
                         bestSolution = bestNeighbor;
+                        if (verbose)
+                            System.out.println("TS Iteration: " + i + " --- Best solution score: " + bestSolution.getFitness());
                         // Update tabu list
                         this.tabuList.add(bestNeighbor);
                         if (this.tabuList.size() >= 100) {

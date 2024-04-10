@@ -9,15 +9,15 @@ public class Main {
         Solution overallBestSolution = null;
         int overallBestFitness = Integer.MIN_VALUE;
         // Initialising pool with random solutions and saving score
-        pool.initialisePoolSolutions(10);
+        pool.initialisePoolSolutions(20);
         // Performing genetic algorithm
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 1; i++) {
             // Crossover
             pool.crossover();
             // Tabu Search optimisation
-            pool.solveTabuSearch();
+            pool.solveTabuSearch(500000, false);
             // Log
-            System.out.println("Iteration: " + i + " --- Best solution score: " + pool.getBestSolution().getFitness());
+            System.out.println("GA Iteration: " + i + " --- Best solution score: " + pool.getBestSolution().getFitness());
             // Update best solution
             if (pool.getBestSolution().getFitness() > overallBestFitness) {
                 overallBestSolution = pool.getBestSolution();

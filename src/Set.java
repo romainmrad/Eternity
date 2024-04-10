@@ -3,8 +3,10 @@ import java.io.*;
 public class Set {
     // First given dimension in input file
     private int xDim;
+
     // Second given dimension in input file
     private int yDim;
+
     // Array of pieces
     private Piece[] pieces;
 
@@ -104,6 +106,11 @@ public class Set {
         return pieces;
     }
 
+    /**
+     * Get body pieces
+     *
+     * @return body pieces in a list
+     */
     public Piece[] getBodyPieces() {
         // Instantiating number of body pieces, array of pieces and start index in original pieces list
         int numPieces = (this.xDim - 2) * (this.yDim - 2);

@@ -3,6 +3,7 @@ import java.util.Random;
 public class RandomGenerator {
     // Single instance of the class
     private static RandomGenerator instance;
+
     // Instance of Random class
     private final Random random;
 

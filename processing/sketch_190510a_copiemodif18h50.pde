@@ -4,7 +4,7 @@ BufferedReader reader;
 String line;
 int[] colors= new int[23];
 
-String inputFile="lastBestSolutionProcessing_pieces_05x05.txt";
+String inputFile="fitness337.txt";
 boolean afficherCorrect =true;
 boolean afficherErreur =true;
 // Set the size of the window

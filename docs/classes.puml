@@ -116,8 +116,8 @@ class Pool {
     + void addSolution()
     + void initialisePoolSolutions()
     + void crossover()
+    + void solveTabuSearch()
     + Solution getBestSolution()
-    + void saveCurrentBestScore()
 
 
     -- Output --

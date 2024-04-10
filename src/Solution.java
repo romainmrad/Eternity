@@ -65,6 +65,7 @@ public class Solution {
      * @param other solution to copy
      */
     public Solution(Solution other) {
+        // Copying solution object
         this.set = other.set;
         this.fitness = 0;
         this.random = RandomGenerator.getInstance();
