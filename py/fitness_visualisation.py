@@ -2,7 +2,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
-df = pd.read_csv(f'./solutionOutput/fitness.txt')
+df = pd.read_csv(f'./solutionOutput/fitness.csv')
 plt.xlabel("Runs")
 plt.ylabel("Best fitness")
 plt.title("GA runs fitness")

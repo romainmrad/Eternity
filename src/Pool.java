@@ -13,8 +13,6 @@ public class Pool {
     // Set object
     private final Set set;
 
-    // Score evolution
-    private final ArrayList<Integer> scoreHistory;
 
     /**
      * Constructor
@@ -23,7 +21,6 @@ public class Pool {
         this.storedSolutions = new ArrayList<>();
         this.random = RandomGenerator.getInstance();
         this.set = set;
-        this.scoreHistory = new ArrayList<>();
     }
 
     /**
@@ -77,9 +74,6 @@ public class Pool {
             // Mutate the child solution
             child.mutate();
             child.evaluate();
-            // Perform tabu search to find better solution
-            TabuSearch search = new TabuSearch(5000);
-            child = search.solve(child);
             // Add child to the new generation
             newGeneration.add(child);
         }
@@ -108,14 +102,6 @@ public class Pool {
             }
         }
         return bestSolution;
-    }
-
-    /**
-     * Save current best score to score history
-     */
-    public void saveCurrentBestScore() {
-        // Adding current score history
-        this.scoreHistory.add(getBestSolution().getFitness());
     }
 
     /**
@@ -186,7 +172,7 @@ public class Pool {
      * Perform tabu search on all solutions in current pool
      */
     public void solveTabuSearch() {
-        this.storedSolutions.replaceAll(solution -> new TabuSearch(5000).solve(solution));
+        this.storedSolutions.replaceAll(solution -> new TabuSearch(10000).solve(solution));
     }
 
     /**
@@ -252,25 +238,5 @@ public class Pool {
             stringBuilder.append('\n').append('\n');
         }
         return stringBuilder.toString();
-    }
-
-    /**
-     * Output score history to csv file
-     *
-     * @param filePath filepath for csv
-     */
-    public void outputScoreHistory(String filePath) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Errors").append('\n');
-        for (Integer score : this.scoreHistory) {
-            stringBuilder.append(score).append('\n');
-        }
-        // Write content to the file
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write(stringBuilder.toString());
-            System.out.println("Content written to " + filePath);
-        } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
-        }
     }
 }
