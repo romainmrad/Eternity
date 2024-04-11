@@ -1,10 +1,10 @@
-public class Piece {
+public class Piece implements Cloneable {
     // Array of sides colors
     private int[] sides;
     // Piece rotation
     private int rotation;
     // Piece index in input file
-    private final int index;
+    private int index;
 
     /**
      * Piece constructor
@@ -27,14 +27,23 @@ public class Piece {
     }
 
     /**
-     * Copy constructor method
+     * Clone method
+     *
+     * @return clone of object
      */
-    public Piece(Piece other) {
-        this.sides = other.sides;
-        this.rotation = other.rotation;
-        this.index = other.index;
+    @Override
+    public Piece clone() {
+        try {
+            Piece clone = (Piece) super.clone();
+            clone.index = this.index;
+            clone.rotation = this.rotation;
+            clone.sides = new int[4];
+            System.arraycopy(this.sides, 0, clone.sides, 0, 4);
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
-
 
     /**
      * Rotates a piece clockwise
@@ -223,4 +232,5 @@ public class Piece {
         piece1.rotateClockwise();
         System.out.println(piece1.equals(piece2));
     }
+
 }

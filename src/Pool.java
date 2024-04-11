@@ -119,32 +119,10 @@ public class Pool {
         for (int i = 0; i < numPieces; i++) {
             // If between crossover points, copy parent
             if (i >= firstCrossoverPoint && i <= secondCrossoverPoint) {
-                for (Piece piece : firstParentPieces) {
-                    if (Piece.isNotInArray(piece, firstChildPieces)) {
-                        firstChildPieces[i] = new Piece(piece);
-                        break;
-                    }
-                }
-                for (Piece piece : secondParentPieces) {
-                    if (Piece.isNotInArray(piece, secondChildPieces)) {
-                        secondChildPieces[i] = new Piece(piece);
-                        break;
-                    }
-                }
+                copyPieces(secondParentPieces, firstParentPieces, firstChildPieces, secondChildPieces, i);
                 // If outside crossover points, copy other parent
             } else {
-                for (Piece piece : secondParentPieces) {
-                    if (Piece.isNotInArray(piece, firstChildPieces)) {
-                        firstChildPieces[i] = new Piece(piece);
-                        break;
-                    }
-                }
-                for (Piece piece : firstParentPieces) {
-                    if (Piece.isNotInArray(piece, secondChildPieces)) {
-                        secondChildPieces[i] = new Piece(piece);
-                        break;
-                    }
-                }
+                copyPieces(firstParentPieces, secondParentPieces, firstChildPieces, secondChildPieces, i);
             }
         }
         // Resetting pieces order
@@ -160,6 +138,21 @@ public class Pool {
         child2.evaluate();
         if (child1.getFitness() > child2.getFitness()) return child1;
         else return child2;
+    }
+
+    private void copyPieces(Piece[] firstParentPieces, Piece[] secondParentPieces, Piece[] firstChildPieces, Piece[] secondChildPieces, int i) {
+        for (Piece piece : secondParentPieces) {
+            if (Piece.isNotInArray(piece, firstChildPieces)) {
+                firstChildPieces[i] = piece.clone();
+                break;
+            }
+        }
+        for (Piece piece : firstParentPieces) {
+            if (Piece.isNotInArray(piece, secondChildPieces)) {
+                secondChildPieces[i] = piece.clone();
+                break;
+            }
+        }
     }
 
     /**
@@ -234,10 +227,5 @@ public class Pool {
             stringBuilder.append('\n').append('\n');
         }
         return stringBuilder.toString();
-    }
-
-    public static void main(String[] args) {
-        System.out.print("ok");
-        System.out.print("okk");
     }
 }

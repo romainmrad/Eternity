@@ -79,7 +79,7 @@ public class TabuSearch {
         // Generate 10 neighbors
         for (int i = 0; i < 10; i++) {
             // Make a copy of the current solution
-            Solution neighbor = new Solution(solution);
+            Solution neighbor = solution.clone();
             // Mutate it and evaluate it
             neighbor.mutate();
             neighbor.mutate();

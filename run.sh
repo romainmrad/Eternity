@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Go to source directory
 cd src/ || exit
 # Compile java code

@@ -5,6 +5,8 @@
 - [Sequence UML Diagram](docs/sequence.pdf)
 
 ## Implementation
-- Genetic algorithm is implemented using Java
+- Genetic Algorithm is implemented using Java
+- Tabu Search is implemented using Java
 - Evaluation is implemented using C++
 - Visualisation is implemented using Python
+- Run automation is implemented using Shell

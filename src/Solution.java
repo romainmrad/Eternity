@@ -3,27 +3,27 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashSet;
 
-public class Solution {
+public class Solution implements Cloneable {
     // Pieces set
-    private final Set set;
+    private Set set;
 
     // Array of pieces
-    private final Piece[][] pieces;
+    private Piece[][] pieces;
 
     // Array of corner pieces [top left, top right, bottom left, bottom right]
-    private final Piece[] cornerPieces;
+    private Piece[] cornerPieces;
 
     // Array of edge pieces [top edges, bottom edges, left edges, right edges]
-    private final Piece[] edgePieces;
+    private Piece[] edgePieces;
 
     // Array of body pieces
-    private final Piece[] bodyPieces;
+    private Piece[] bodyPieces;
 
     // Solution fitness
     private int fitness;
 
     // Random generator
-    private final RandomGenerator random;
+    private RandomGenerator random;
 
     /**
      * Constructor uses Set constructor
@@ -60,32 +60,36 @@ public class Solution {
     }
 
     /**
-     * Copy constructor
+     * Clone method
      *
-     * @param other solution to copy
+     * @return clone of object
      */
-    public Solution(Solution other) {
-        // Copying solution object
-        this.set = other.set;
-        this.fitness = 0;
-        this.random = RandomGenerator.getInstance();
-        this.pieces = new Piece[this.set.getxDim()][this.set.getyDim()];
-        this.cornerPieces = new Piece[4];
-        this.edgePieces = new Piece[2 * ((this.set.getxDim() - 2) + (this.set.getyDim() - 2))];
-        this.bodyPieces = new Piece[(this.set.getxDim() - 2) * (this.set.getyDim() - 2)];
-        for (int i = 0; i < this.set.getxDim(); i++) {
-            for (int j = 0; j < this.set.getyDim(); j++) {
-                this.pieces[i][j] = new Piece(other.pieces[i][j]);
+    @Override
+    public Solution clone() {
+        try {
+            Solution clone = (Solution) super.clone();
+            clone.set = this.set;
+            clone.fitness = 0;
+            clone.random = RandomGenerator.getInstance();
+            // Copying pieces
+            clone.pieces = new Piece[clone.set.getxDim()][clone.set.getyDim()];
+            for (int i = 0; i < set.getxDim(); i++) {
+                for (int j = 0; j < set.getyDim(); j++) {
+                    clone.pieces[i][j] = this.pieces[i][j].clone();
+                }
             }
-        }
-        for (int i = 0; i < cornerPieces.length; i++) {
-            this.cornerPieces[i] = new Piece(other.cornerPieces[i]);
-        }
-        for (int i = 0; i < edgePieces.length; i++) {
-            this.edgePieces[i] = new Piece(other.edgePieces[i]);
-        }
-        for (int i = 0; i < bodyPieces.length; i++) {
-            this.bodyPieces[i] = new Piece(other.bodyPieces[i]);
+            // Copying corners
+            clone.cornerPieces = new Piece[4];
+            for (int i = 0; i < clone.cornerPieces.length; i++) clone.cornerPieces[i] = this.cornerPieces[i].clone();
+            // Copying edges
+            clone.edgePieces = new Piece[2 * ((clone.set.getxDim() - 2) + (clone.set.getyDim() - 2))];
+            for (int i = 0; i < edgePieces.length; i++) clone.edgePieces[i] = this.edgePieces[i].clone();
+            // Copying body
+            clone.bodyPieces = new Piece[(clone.set.getxDim() - 2) * (clone.set.getyDim() - 2)];
+            for (int i = 0; i < bodyPieces.length; i++) clone.bodyPieces[i] = this.bodyPieces[i].clone();
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
         }
     }
 
@@ -457,4 +461,6 @@ public class Solution {
             System.err.println("Error writing to file: " + e.getMessage());
         }
     }
+
+
 }

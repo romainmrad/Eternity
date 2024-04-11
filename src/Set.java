@@ -85,7 +85,7 @@ public class Set {
         Piece[] pieces = new Piece[4];
         // Copying piece objects in new array
         for (int i = 0; i < 4; i++) {
-            pieces[i] = new Piece(this.pieces[i]);
+            pieces[i] = this.pieces[i].clone();
         }
         return pieces;
     }
@@ -101,7 +101,7 @@ public class Set {
         Piece[] pieces = new Piece[numPieces];
         // Copying piece objects in new array
         for (int i = 0; i < numPieces; i++) {
-            pieces[i] = new Piece((this.pieces[i + 4]));
+            pieces[i] = this.pieces[i + 4].clone();
         }
         return pieces;
     }
@@ -118,7 +118,7 @@ public class Set {
         Piece[] pieces = new Piece[numPieces];
         // Copying piece objects in new array
         for (int i = 0; i < numPieces; i++) {
-            pieces[i] = new Piece(this.pieces[i + startIndex]);
+            pieces[i] = this.pieces[i + startIndex].clone();
         }
         // Copying pieces in array and returning it
         return pieces;
