@@ -1,3 +1,8 @@
+/**
+ * Projet Optimisation Combinatoire sur Eternity II
+ * <p>
+ * Romain MRAD, Erwan COYAUD
+ */
 public class Main {
     public static void main(String[] args) {
         // Initialising eternity 2 puzzle
@@ -9,25 +14,29 @@ public class Main {
         Solution overallBestSolution = null;
         int overallBestFitness = Integer.MIN_VALUE;
         // Initialising pool with random solutions and saving score
-        pool.initialisePoolSolutions(20);
+        pool.initialisePoolSolutions(10);
         // Performing genetic algorithm
-        for (int i = 0; i < 1; i++) {
+        int i = 0;
+        while (overallBestFitness <= 350 && i < 5000) {
+            System.out.println("================ GA Iteration: " + String.format("%2d", i) + " ================");
             // Crossover
             pool.crossover();
             // Tabu Search optimisation
-            pool.solveTabuSearch(500000, false);
+            pool.solveTabuSearch(500000, true);
             // Log
-            System.out.println("GA Iteration: " + i + " --- Best solution score: " + pool.getBestSolution().getFitness());
+            System.out.println();
+            System.out.println(">>> Best solution fitness: " + pool.getBestSolution().getFitness());
             // Update best solution
             if (pool.getBestSolution().getFitness() > overallBestFitness) {
                 overallBestSolution = pool.getBestSolution();
                 overallBestFitness = overallBestSolution.getFitness();
+                // Output last solution and overall solution for evaluation and processing
+                overallBestSolution.outputEval("../solutionOutput/individualSolutions/fitness" + overallBestFitness + ".txt");
+                overallBestSolution.outputEval("../solutionOutput/solution.txt");
+                overallBestSolution.outputProcessing("../processing/fitness" + overallBestFitness + ".txt");
             }
+            System.out.println();
+            i++;
         }
-        // Output last solution and overall solution for evaluation and processing
-        assert overallBestSolution != null;
-        overallBestSolution.outputEval("../solutionOutput/individualSolutions/fitness" + overallBestFitness + ".txt");
-        overallBestSolution.outputEval("../solutionOutput/solution.txt");
-        overallBestSolution.outputProcessing("../processing/fitness" + overallBestFitness + ".txt");
     }
 }

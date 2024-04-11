@@ -166,7 +166,7 @@ public class Pool {
      * Perform tabu search on all solutions in current pool
      */
     public void solveTabuSearch(int iterations, boolean verbose) {
-        this.storedSolutions.replaceAll(solution -> new TabuSearch(iterations).solve(solution, verbose));
+        this.storedSolutions.replaceAll(initialSolution -> new TabuSearch(iterations).solve(initialSolution, verbose));
     }
 
     /**
@@ -234,5 +234,10 @@ public class Pool {
             stringBuilder.append('\n').append('\n');
         }
         return stringBuilder.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.print("ok");
+        System.out.print("okk");
     }
 }

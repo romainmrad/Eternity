@@ -26,8 +26,10 @@ public class TabuSearch {
     public Solution solve(Solution initialSolution, boolean verbose) {
         // Instantiate the best solution and set it to initial solution
         Solution bestSolution = initialSolution;
+        int indexTracker = 0;
+        int i = 0;
         // Start iterations
-        for (int i = 0; i < this.maxIterations; i++) {
+        while (i < this.maxIterations && i - indexTracker < 5000) {
             // Get current best solution neighbors
             ArrayList<Solution> neighbors = generateNeighbors(bestSolution);
             // Reset bestNeighborFound variable
@@ -40,13 +42,14 @@ public class TabuSearch {
                 if (!this.tabuList.contains(bestNeighbor)) {
                     // Set bestNeighborFound to true to exist while loop
                     bestNeighborFound = true;
+                    if (verbose)
+                        System.out.print("TS Iteration: " + String.format("%5d", i) + " --- Best solution fitness: " + bestSolution.getFitness() + "\r");
+                    // Update tabu list
                     // If current best neighbor better than current best solution
                     if (bestNeighbor.getFitness() > bestSolution.getFitness()) {
                         // Set best solution to current best neighbor
                         bestSolution = bestNeighbor;
-                        if (verbose)
-                            System.out.println("TS Iteration: " + i + " --- Best solution score: " + bestSolution.getFitness());
-                        // Update tabu list
+                        indexTracker = i;
                         this.tabuList.add(bestNeighbor);
                         if (this.tabuList.size() >= 100) {
                             this.tabuList.remove(0);
@@ -57,7 +60,9 @@ public class TabuSearch {
                     neighbors.remove(bestNeighbor);
                 }
             }
+            i++;
         }
+        System.out.println();
         return bestSolution;
     }
 
@@ -76,6 +81,7 @@ public class TabuSearch {
             // Make a copy of the current solution
             Solution neighbor = new Solution(solution);
             // Mutate it and evaluate it
+            neighbor.mutate();
             neighbor.mutate();
             neighbor.evaluate();
             // Add the mutated solution to the list of neighbors
