@@ -22,7 +22,7 @@ public class Main {
             // Crossover
             pool.crossover();
             // Tabu Search optimisation
-            pool.solveTabuSearch(500000, true);
+            pool.solveTabuSearch(500000, false);
             // Log
             System.out.println();
             System.out.println(">>> Best solution fitness: " + pool.getBestSolution().getFitness());

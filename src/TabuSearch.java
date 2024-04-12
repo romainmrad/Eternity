@@ -62,7 +62,7 @@ public class TabuSearch {
             }
             i++;
         }
-        System.out.println();
+        if (verbose) System.out.println();
         return bestSolution;
     }
 

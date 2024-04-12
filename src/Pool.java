@@ -158,8 +158,8 @@ public class Pool {
     /**
      * Perform tabu search on all solutions in current pool
      */
-    public void solveTabuSearch(int iterations, boolean verbose) {
-        this.storedSolutions.replaceAll(initialSolution -> new TabuSearch(iterations).solve(initialSolution, verbose));
+    public void solveTabuSearch(int maxIterations, boolean verbose) {
+        this.storedSolutions.replaceAll(initialSolution -> new TabuSearch(maxIterations).solve(initialSolution, verbose));
     }
 
     /**
