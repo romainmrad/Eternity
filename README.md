@@ -33,6 +33,16 @@ To test each tuning, we execute the [Main](./src/Main.java) script 10 times.
 
 ![image](./graphs/fitness.png)
 
+Execute this command to visualise the fitness .csv file : 
+```shell
+Python3 fitness_visualisation.py
+```
+
+Requirements : 
+- seaborn
+- matplotlib
+- pandas
+
 ## Shell Automations
 
 Two Shell scripts are implemented to simplify and automate the execution
@@ -48,3 +58,13 @@ or
 ```shell
 ./automate_runs.sh
 ```
+
+## Results
+
+All found solutions are output twice : 
+- once for fitness evaluation using the provided c++ script [link to directory](./solutionOutput/individualSolutions)
+- once for visualisation using the provided processing script [link to directory](./processing)
+
+The maximum found solution has a fitness of 337 
+- [Evaluation txt file](./solutionOutput/individualSolutions/fitness337.txt)
+- [Processing txt file](./processing/fitness337.txt)
