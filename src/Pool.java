@@ -158,8 +158,8 @@ public class Pool {
     /**
      * Perform tabu search on all solutions in current pool
      */
-    public void solveTabuSearch(int maxIterations, boolean verbose) {
-        this.storedSolutions.replaceAll(initialSolution -> new TabuSearch(maxIterations).solve(initialSolution, verbose));
+    public void solveTabuSearch(int maxIterations, int iterationsThreshold, boolean verbose) {
+        this.storedSolutions.replaceAll(initialSolution -> new TabuSearch(maxIterations, iterationsThreshold).solve(initialSolution, verbose));
     }
 
     /**
@@ -206,26 +206,5 @@ public class Pool {
             }
         }
         return bestSolution;
-    }
-
-    /**
-     * String representation of the gene pool
-     */
-    @Override
-    public String toString() {
-        // Instantiating string builder
-        StringBuilder stringBuilder = new StringBuilder();
-        // Adding solutions string representation
-        for (int i = 0; i < this.storedSolutions.size(); i++) {
-            // Adding solution index
-            stringBuilder.append("Solution: ").append(i);
-            // Adding solution score
-            stringBuilder.append(" --- Fitness: ").append(this.storedSolutions.get(i).getFitness()).append('\n');
-            // Adding solution string representation
-            stringBuilder.append(this.storedSolutions.get(i));
-            // Adding line breaks
-            stringBuilder.append('\n').append('\n');
-        }
-        return stringBuilder.toString();
     }
 }

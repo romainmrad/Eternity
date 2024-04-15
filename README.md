@@ -4,9 +4,47 @@
 - [Classes UML Diagram](docs/classes.pdf)
 - [Sequence UML Diagram](docs/sequence.pdf)
 
-## Implementation
-- Genetic Algorithm is implemented using Java
-- Tabu Search is implemented using Java
-- Evaluation is implemented using C++
-- Visualisation is implemented using Python
-- Run automation is implemented using Shell
+## Algorithm
+
+To solve the eternity 2 16x16 puzzle, we implemented a Genetic Algorithm
+and a Tabu Search optimisation to reach a good fitness level. 
+
+### Genetic Algorithm
+
+The GA is implemented using the [Pool](./src/Pool.java) object. 
+- Parent selection is random-tournament-based which lets us diversify the selection
+while keeping a having elitism. 
+- Children are generated using two-point crossover of both parents
+- Best of both children is retained for next generation of solutions
+- After each breeding process, a Tabu Search optimisation is executed
+on each child of the new generation. 
+
+### Tabu Search
+The TS is implemented using the [TabuSearch](./src/TabuSearch.java) object.
+- Neighbors are generated using mutations on the current solution
+- The algorithm runs while two conditions are true : 
+  - number of iterations < max iterations
+  - number of iterations since last best found solution < max iteration threshold
+
+## Fine tuning
+
+The following graph is generated using a [Python script](./fitness_visualisation.py).
+To test each tuning, we execute the [Main](./src/Main.java) script 10 times.
+
+![image](./graphs/fitness.png)
+
+## Shell Automations
+
+Two Shell scripts are implemented to simplify and automate the execution
+of our program : 
+- [`run.sh`](./run.sh) script is used to execute the algorithm once
+- [`automate_runs.sh`](./automate_runs.sh) is used to execute the [`run.sh`](./run.sh) 10 times
+
+To run any of these automations, execute the following commands in a Shell:
+```shell
+./run.sh
+```
+or 
+```shell
+./automate_runs.sh
+```

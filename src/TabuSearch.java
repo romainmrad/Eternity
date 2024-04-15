@@ -7,13 +7,17 @@ public class TabuSearch {
     // Max number of iterations
     private final int maxIterations;
 
+    // Max number of iterations since last best solution
+    private final int iterationsThreshold;
+
     /**
      * Constructor
      *
      * @param maxIterations maximum number of iterations
      */
-    public TabuSearch(int maxIterations) {
+    public TabuSearch(int maxIterations, int iterationsThreshold) {
         this.maxIterations = maxIterations;
+        this.iterationsThreshold = iterationsThreshold;
         this.tabuList = new ArrayList<>();
     }
 
@@ -29,7 +33,7 @@ public class TabuSearch {
         int indexTracker = 0;
         int i = 0;
         // Start iterations
-        while (i < this.maxIterations && i - indexTracker < 5000) {
+        while (i < this.maxIterations && i - indexTracker < this.iterationsThreshold) {
             // Get current best solution neighbors
             ArrayList<Solution> neighbors = generateNeighbors(bestSolution);
             // Reset bestNeighborFound variable

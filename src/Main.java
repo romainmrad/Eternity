@@ -17,12 +17,12 @@ public class Main {
         pool.initialisePoolSolutions(10);
         // Performing genetic algorithm
         int i = 0;
-        while (overallBestFitness <= 350 && i < 5000) {
+        while (overallBestFitness <= 340 && i < 200) {
             System.out.println("================ GA Iteration: " + String.format("%2d", i) + " ================");
             // Crossover
             pool.crossover();
             // Tabu Search optimisation
-            pool.solveTabuSearch(500000, false);
+            pool.solveTabuSearch(500000, 5000, true);
             // Log
             System.out.println();
             System.out.println(">>> Best solution fitness: " + pool.getBestSolution().getFitness());
