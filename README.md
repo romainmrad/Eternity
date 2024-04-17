@@ -1,5 +1,9 @@
 # Eternity 2 Genetic Algorithm implementation
 
+Élèves : 
+- MRAD Romain
+- COYAUD Erwan
+
 ## UML Diagrams
 - [Classes UML Diagram](docs/classes.pdf)
 - [Sequence UML Diagram](docs/sequence.pdf)
