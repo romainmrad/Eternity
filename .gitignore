@@ -39,5 +39,6 @@ bin/
 *.obj
 CMakeLists.txt
 cmake-build-debug
-eval
+
+### Java executables ###
 *.class

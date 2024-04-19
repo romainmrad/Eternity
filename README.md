@@ -1,6 +1,6 @@
 # Eternity 2 Genetic Algorithm implementation
 
-Élèves : 
+Project is done by: 
 - MRAD Romain
 - COYAUD Erwan
 
@@ -54,7 +54,7 @@ of our program :
 - [`run.sh`](./run.sh) script is used to execute the algorithm once
 - [`automate_runs.sh`](./automate_runs.sh) is used to execute the [`run.sh`](./run.sh) 10 times
 
-To run any of these automations, execute the following commands in a Shell:
+To run any of these automations, execute the following commands in a Shell opened at the root directory "Eternity":
 ```shell
 ./run.sh
 ```
@@ -69,6 +69,13 @@ All found solutions are output twice :
 - once for fitness evaluation using the provided c++ script [link to directory](./solutionOutput/individualSolutions)
 - once for visualisation using the provided processing script [link to directory](./processing)
 
-The maximum found solution has a fitness of 337 
+The maximum found solution has a fitness of 337. See following files for evaluation and visualisation. 
 - [Evaluation txt file](./solutionOutput/individualSolutions/fitness337.txt)
-- [Processing txt file](./processing/fitness337.txt)
+- [Processing txt file](./processing/fitness337.txt). You can execute the [processing file](processing/sketch_190510a_copiemodif18h50.pde) directly. The solution is
+already referenced in the code.
+
+To evaluate the solution, execute this in a terminal:
+```shell
+.././eval ../benchs/pieces_set/pieces_16x16.txt ../solutionOutput/fitness337.txt ../solutionOutput/eval.txt
+```
+The fitness will be output in solutionOutput/eval.txt file. 
