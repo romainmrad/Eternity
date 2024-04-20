@@ -33,7 +33,7 @@ The TS is implemented using the [TabuSearch](./src/TabuSearch.java) object.
 ## Fine tuning
 
 The following graph is generated using a [Python script](./fitness_visualisation.py).
-To test each tuning, we execute the [Main](./src/Main.java) script 10 times.
+To test each tuning, we execute the [Main java class](./src/Main.java) 10 times.
 
 ![image](./graphs/fitness.png)
 
