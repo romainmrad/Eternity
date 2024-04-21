@@ -35,6 +35,22 @@ The TS is implemented using the [TabuSearch](./src/TabuSearch.java) object.
 The following graph is generated using a [Python script](./fitness_visualisation.py).
 To test each tuning, we execute the [Main java class](./src/Main.java) 10 times.
 
+Les paramètres à tester étaient : 
+- le pourcentage de mutation
+- la taille d'une génération
+- le nombre d'itération de la recherche taboo
+
+Au début, nous avons testé plusieurs combinaisons de mutation/taille de generation. 
+Nous trouvons qu'un pourcentage de mutation a 0.001 est mieux qu'un pourcentage de mutation a 0.01. 
+Ensuite, la taille des generations n'influait pas beaucoup. Nous l'avons donc fixé a 10. 
+Enfin, nous avons essaye plusieurs iterations de la recherche taboo. Nous remarquons que plus elle est elevé, 
+plus l'alogirthme arrive a trouver des meilleurs solutions. 
+
+Enfin, nous avons mis en oeuvre des limites au lieu de fixer les paramètres:
+- l'algorithme génétique s'arrête si une fitness est atteinte (340 dans le Main) ou si un nombre max d'iterations est fait (5 dans le Main)
+- la recherche taboo s'arrête si le nombre d'itérations effectuées depuis la dernière meilleure solution trouvée dépasse un seuil.
+En d'autre termes, si ca fait N iterations qu'on trouve rien de mieux, on s'arrête.
+
 ![image](./graphs/fitness.png)
 
 Execute this command to visualise the fitness .csv file : 
