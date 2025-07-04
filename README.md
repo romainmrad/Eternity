@@ -1,8 +1,6 @@
 # Eternity 2 Genetic Algorithm implementation
 
-Project is done by: 
-- MRAD Romain
-- COYAUD Erwan
+Romain MRAD
 
 ## UML Diagrams
 - [Classes UML Diagram](docs/classes.pdf)
