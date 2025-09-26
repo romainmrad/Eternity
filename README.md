@@ -33,21 +33,16 @@ The TS is implemented using the [TabuSearch](./src/TabuSearch.java) object.
 The following graph is generated using a [Python script](./fitness_visualisation.py).
 To test each tuning, we execute the [Main java class](./src/Main.java) 10 times.
 
-Les paramètres à tester étaient : 
-- le pourcentage de mutation
-- la taille d'une génération
-- le nombre d'itération de la recherche taboo
+The parameters we tested were:
+- mutation rate
+- generation size
+- number of iterations in the tabu search
 
-Au début, nous avons testé plusieurs combinaisons de mutation/taille de generation. 
-Nous trouvons qu'un pourcentage de mutation a 0.001 est mieux qu'un pourcentage de mutation a 0.01. 
-Ensuite, la taille des generations n'influait pas beaucoup. Nous l'avons donc fixé a 10. 
-Enfin, nous avons essaye plusieurs iterations de la recherche taboo. Nous remarquons que plus elle est elevé, 
-plus l'alogirthme arrive a trouver des meilleurs solutions. 
+At first, we experimented with different combinations of mutation rate and generation size. We found that a mutation rate of 0.001 performed better than 0.01. The size of the generations did not have much impact, so we fixed it at 10. Finally, we tried different numbers of iterations for the tabu search, and observed that the higher the number of iterations, the better the algorithm was at finding good solutions.
 
-Enfin, nous avons mis en oeuvre des limites au lieu de fixer les paramètres:
-- l'algorithme génétique s'arrête si une fitness est atteinte (340 dans le Main) ou si un nombre max d'iterations est fait (5 dans le Main)
-- la recherche taboo s'arrête si le nombre d'itérations effectuées depuis la dernière meilleure solution trouvée dépasse un seuil.
-En d'autre termes, si ca fait N iterations qu'on trouve rien de mieux, on s'arrête.
+We then introduced stopping criteria instead of fixing parameters outright:
+- the genetic algorithm stops if a target fitness value is reached (340 in the Main) or if a maximum number of iterations is exceeded (5 in the Main)
+- the tabu search stops if the number of iterations since the last improvement goes beyond a threshold. In other words, if no better solution has been found for N iterations, the search ends.
 
 ![image](./graphs/fitness.png)
 
