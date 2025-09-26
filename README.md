@@ -1,6 +1,8 @@
 # Eternity 2 Genetic Algorithm implementation
 
-Romain MRAD
+by Romain MRAD
+
+Here's my take at getting a sub-optimal solution of the Eternity 2 16x16 edge-matching puzzle [Puzzle link](https://en.wikipedia.org/wiki/Eternity_II_puzzle). 
 
 ## UML Diagrams
 - [Classes UML Diagram](docs/classes.pdf)
